@@ -3,29 +3,74 @@ mongoose.connect('mongodb://localhost/test');
 
 var db = mongoose.connection;
 
-db.on('error', function() {
+db.on('error', function () {
   console.log('mongoose connection error');
 });
 
-db.once('open', function() {
+db.once('open', function () {
   console.log('mongoose connected successfully');
 });
 
-var itemSchema = mongoose.Schema({
-  quantity: Number,
-  description: String
+var userSchema = mongoose.Schema({
+  username: String,
+  email: String,
+  password: String
 });
 
-var Item = mongoose.model('Item', itemSchema);
+var user = mongoose.model('user', userSchema);
 
-var selectAll = function(callback) {
-  Item.find({}, function(err, items) {
-    if(err) {
+var selectAll = function (callback) {
+  user.find({}, function (err, users) {
+    if (err) {
       callback(err, null);
     } else {
-      callback(null, items);
+      callback(null, users);
     }
   });
 };
+var create = function (data, callback) {
+  user.create(data, (err, dat) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, dat)
+    }
+
+  })
+}
+
+var removeAll = function (dat, callback) {
+  user.deleteMany({}, (err, dat) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, dat)
+    }
+  });
+}
+
+var removeOne = function (data, callback) {
+  user.deleteOne(data, (err, dat) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, dat)
+    }
+  })
+}
+
+var updateOne = function (data, callback) {
+  user.updateOne(data, (err, dat) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, dat)
+    }
+  })
+}
 
 module.exports.selectAll = selectAll;
+module.exports.create = create;
+module.exports.removeAll = removeAll;
+module.exports.removeOne = removeOne;
+module.exports.updateOne = updateOne;

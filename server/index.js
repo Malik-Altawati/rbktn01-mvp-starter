@@ -1,29 +1,66 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
-// var items = require('../database-mongo');
+var user = require('../database-mongo');
 
 var app = express();
 
-// UNCOMMENT FOR REACT
-// app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(express.static(__dirname + '/../react-client/dist'));
+app.use(bodyParser.json())
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-// UNCOMMENT FOR ANGULAR
-// app.use(express.static(__dirname + '/../angular-client'));
-// app.use(express.static(__dirname + '/../node_modules'));
+app.post('/user', urlencodedParser, function (req, res) {
 
-app.get('/items', function (req, res) {
-  items.selectAll(function(err, data) {
-    if(err) {
+
+  user.create(req.body, (err, dat) => {
+    if (dat) {
+      console.log("New User Was Created")
+      res.send("New User Was Created")
+      res.end()
+    }
+  })
+});
+
+app.get('/removeAll', urlencodedParser, function (req, res) {
+  user.removeAll({}, (err, dat) => {
+    if (dat) {
+      res.send("Everything is Deleted")
+      res.end()
+    }
+  })
+});
+
+app.post('/removeOne', urlencodedParser, function (req, res) {
+  //console.log(req.body, "test")
+  user.removeOne(req.body, (err, dat) => {
+    if (dat) {
+      res.send("User Was Deleted")
+      res.end()
+    }
+  })
+});
+
+app.post('/updateOne', urlencodedParser, function (req, res) {
+
+  user.updateOne(req.body, (err, dat) => {
+    if (dat) {
+      res.send("User Was updated")
+      res.end()
+    }
+  })
+});
+
+app.get('/users', function (req, res) {
+  user.selectAll(function (err, data) {
+    if (err) {
       res.sendStatus(500);
     } else {
-      res.json(data);
+      res.send(data);
     }
   });
 });
 
-app.listen(3000, function() {
+
+app.listen(3000, function () {
   console.log('listening on port 3000!');
 });
 

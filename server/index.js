@@ -17,6 +17,10 @@ app.post('/user', urlencodedParser, function (req, res) {
       res.send("New User Was Created")
       res.end()
     }
+    if (err) {
+      res.send("Username Has to be Unique")
+      res.end()
+    }
   })
 });
 

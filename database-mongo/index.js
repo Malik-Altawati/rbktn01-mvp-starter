@@ -12,7 +12,7 @@ db.once('open', function () {
 });
 
 var userSchema = mongoose.Schema({
-  username: String,
+  username: { type: String, unique: true },
   email: String,
   password: String
 });

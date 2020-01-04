@@ -1,0 +1,13 @@
+body{
+  background-color: lime;
+  color: black;
+}
+
+button {
+  border-radius: 70px;
+}
+
+input {
+  border-radius: 70px;
+  text-align: center;
+}

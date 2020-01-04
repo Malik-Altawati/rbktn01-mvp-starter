@@ -59,8 +59,8 @@ var removeOne = function (data, callback) {
   })
 }
 
-var updateOne = function (data, callback) {
-  user.updateOne(data, (err, dat) => {
+var updateOne = function (filter, update, callback) {
+  user.findOneAndUpdate(filter, update, (err, dat) => {
     if (err) {
       callback(err, null)
     } else {

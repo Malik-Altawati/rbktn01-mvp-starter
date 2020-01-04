@@ -83,40 +83,39 @@ class Pro extends React.Component {
   handleRemoveUser(event) {
     event.preventDefault();
     var target = $("#deleteUser").val()
-    axios.post('/removeOne', { username: target })
-      .then(function (response) {
-        console.log(response);
-        alert(`${target} was Deleted`)
-        // this.handleShow(event).bind(this)
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
+    if (!target) {
+      alert("You need to Enter a Valid username")
+
+    } else {
+      axios.post('/removeOne', { username: target })
+        .then(function (response) {
+          console.log(response);
+          alert(`${target} was Deleted`)
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    }
   }
 
   handleUpdateUser(event) {
     event.preventDefault();
     var Username = $("#updateUser").val()
-    var Email = $("#updateUserEmail").val()
     var Password = $("#updateUserPassword").val()
     var format = {
       "username": Username,
-      "$set": {
-        "email": Email,
-        "password": Password
-      }
+      "password": Password
     }
     axios.post('/updateOne', format)
       .then(function (response) {
         console.log(response);
-        alert(`${target} was Updated`)
+        alert(`${Username} was Updated`)
       })
       .catch(function (error) {
         console.log(error);
         alert(error)
       })
     $("#updateUser").val("")
-    $("#updateUserEmail").val("")
     $("#updateUserPassword").val("")
   }
 
@@ -139,20 +138,22 @@ class Pro extends React.Component {
             <br></br> Email: <br></br>
             <input type="text" id="email" onChange={this.handleChange.bind(this)} />
             <br></br> Password: <br></br>
-            <input type="text" id="password" onChange={this.handleChange.bind(this)} />
+            <input type="password" id="password" onChange={this.handleChange.bind(this)} />
             <br></br> <br></br>
             <input type="submit" value="Create" />
           </form>
           <hr></hr>
-          <strong>Delete User :</strong> <input type="text" id="deleteUser" /> <button onClick={this.handleRemoveUser.bind(this)}>Delete</button>
+          <h2>Delete User</h2>
+          Username : <input type="text" id="deleteUser" /> <button onClick={this.handleRemoveUser.bind(this)}>Delete</button>
+          <br></br>
           <hr></hr>
           <h2>Update User Info</h2>
           <br></br> Username :<br></br> <input type="text" id="updateUser" />
-          <br></br>New Email :<br></br> <input type="text" id="updateUserEmail" />
-          <br></br>  New Password :<br></br> <input type="text" id="updateUserPassword" />
+          <br></br>  New Password :<br></br> <input type="password" id="updateUserPassword" />
           <br></br>
           <br></br><button onClick={this.handleUpdateUser.bind(this)}>Update</button>
           <hr></hr>
+          <h2>Read Users</h2>
           <br></br><button onClick={this.handleShow.bind(this)}>Show All Users / Refresh</button> &nbsp; &nbsp;
           <button onClick={this.handleRemoveAll.bind(this)}>Delete All Users</button>
           <hr></hr>

@@ -9,8 +9,6 @@ app.use(bodyParser.json())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.post('/user', urlencodedParser, function (req, res) {
-
-
   user.create(req.body, (err, dat) => {
     if (dat) {
       console.log("New User Was Created")
@@ -34,18 +32,21 @@ app.get('/removeAll', urlencodedParser, function (req, res) {
 });
 
 app.post('/removeOne', urlencodedParser, function (req, res) {
-  //console.log(req.body, "test")
   user.removeOne(req.body, (err, dat) => {
     if (dat) {
       res.send("User Was Deleted")
+      res.end()
+    } else {
+      res.send(err)
       res.end()
     }
   })
 });
 
 app.post('/updateOne', urlencodedParser, function (req, res) {
+  // console.log(req.body.username, req.body.password)
 
-  user.updateOne(req.body, (err, dat) => {
+  user.updateOne({ username: req.body.username }, { password: req.body.password }, (err, dat) => {
     if (dat) {
       res.send("User Was updated")
       res.end()
